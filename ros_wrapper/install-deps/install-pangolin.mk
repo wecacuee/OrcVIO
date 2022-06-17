@@ -2,7 +2,7 @@
 SHELL=/bin/bash -l
 ROOT_DIR?=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
-PANGOLIN_VERSION?=v0.5
+PANGOLIN_VERSION?=v0.8
 SOURCE_PREFIX?=$(HOME)/.local/src/
 STOW_PREFIX?=$(SOURCE_PREFIX)/stow
 

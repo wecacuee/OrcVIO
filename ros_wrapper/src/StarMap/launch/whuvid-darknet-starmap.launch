@@ -32,14 +32,14 @@
   <!-- sort_ros.launch 
   -->
   <arg name="tracked_bbox_topic" default="/camera/left/tracked_bounding_boxes" />
-  <arg name="visualization_topic" default="/camera/left/tracked_bbox_vis" />
+  <arg name="sort_ros_vis_topic" default="/camera/left/tracked_bbox_vis" />
   <node pkg="nodelet" type="nodelet" name="sort_ros"
         args="load sort_ros/SortRos $(arg nodelet_manager)"
         >
     <param name="image_topic" value="$(arg image_topic)" />
     <param name="bbox_topic" value="$(arg bbox_topic)" />
     <param name="tracked_bbox_topic" value="$(arg tracked_bbox_topic)" />
-    <param name="visualization_topic" value="$(arg visualization_topic)" />
+    <param name="visualization_topic" value="$(arg sort_ros_vis_topic)" />
     <param name="valid_class_labels"  type="yaml"
            value="[car, truck, bus]"
            />
@@ -47,19 +47,21 @@
 
   <!-- visualize sort ros image
   <node pkg="image_view" type="image_view" name="vis_sort_ros" >
-    <remap from="image" to="$(arg visualization_topic)" />
+    <remap from="image" to="$(arg sort_ros_vis_topic)" />
   </node>
   -->
 
   <!-- starmap.launch 
   -->
   <arg name="keypoint_topic" default="/camera/left/keypoints" />
+  <arg name="starmap_vis_topic" default="/camera/left/starmap_vis" />
   <node pkg="nodelet" type="nodelet" name="starmap"
         args="load starmap/Starmap $(arg nodelet_manager)"
          >
     <param name="image_topic" value="$(arg image_topic)" />
     <param name="bbox_topic" value="$(arg tracked_bbox_topic)" />
     <param name="keypoint_topic" value="$(arg keypoint_topic)" />
+    <param name="visualization_topic" value="$(arg starmap_vis_topic)" />
     <param name="starmap_model_path" value="$(find starmap)/models/model_cpu-jit.pth" />
     <param name="gpu_id" value="0" type="int" />
     <param name="to_color_img_flag" type="bool" value="true" />
@@ -70,11 +72,22 @@
   -->
   <node pkg="rosbag" type="record" name="rosbag_record"
         args="$(eval
-              arg('image_topic') + ' '
-              + arg('tracked_bbox_topic') + ' '
+              arg('tracked_bbox_topic') + ' '
               + arg('bbox_topic') + ' '
               + arg('keypoint_topic')
-              + ' -O ' + arg('bagfile')[:-4] + '-bbox.bag'
+              + ' -O ' + arg('bagfile')[:-4] + '-left-starmap.bag'
               )"
         />
+  <node pkg="rosbag" type="record" name="rosbag_record_vis"
+        args="$(eval
+              arg('starmap_vis_topic')
+              + ' -O ' + arg('bagfile')[:-4] + '-left-starmap-vis.bag'
+              )"
+        />
+  <!-- visualize starmap image
+  <node pkg="image_view" type="image_view" name="vis_starmap" >
+    <remap from="image" to="$(arg starmap_vis_topic)" />
+  </node>
+  -->
+
 </launch>
