@@ -29,7 +29,6 @@ include_directories(
     ${Boost_INCLUDE_DIR}
     ${EIGEN3_INCLUDE_DIR}
     ${Pangolin_INCLUDE_DIRS}
-    ${Sophus_INCLUDE_DIRS}
 )
 
 # Image processor
@@ -80,6 +79,7 @@ target_link_libraries(${PROJECT_NAME}_estimator
     ${PROJECT_NAME}_flexible_initializer
     ${SUITESPARSE_LIBRARIES}
     ${OpenCV_LIBRARIES}
+    Sophus::Sophus
 )
 
 # App
@@ -99,19 +99,19 @@ file(GLOB mappingFiles
 add_library(${PROJECT_NAME}_mapping
   ${mappingFiles})
 target_link_libraries(${PROJECT_NAME}_mapping
-  ${OpenCV_LIBS})
+  ${OpenCV_LIBS}
+  Sophus::Sophus)
 
 if(BUILD_TESTING)
 
   find_package(GTest REQUIRED)
-  find_package(PythonLibs 2.7)
-  if(PYTHONLIBS_FOUND AND NOT DISABLE_MATPLOTLIB)
+  find_package(Python3 COMPONENTS Development)
+  if(Python3_FOUND AND NOT DISABLE_MATPLOTLIB)
     add_definitions(-DHAVE_PYTHONLIBS=1)
-    message(STATUS "PYTHON VERSION: " ${PYTHONLIBS_VERSION_STRING})
-    message(STATUS "PYTHON INCLUDE: " ${PYTHON_INCLUDE_DIRS})
-    message(STATUS "PYTHON LIBRARIES: " ${PYTHON_LIBRARIES})
+    message(STATUS "PYTHON VERSION: " ${Python3_VERSION})
+    message(STATUS "PYTHON INCLUDE: " ${Python3_INCLUDE_DIRS})
+    message(STATUS "PYTHON LIBRARIES: " ${Python3_STDLIB})
   endif()
-  include_directories(${PYTHON_INCLUDE_DIRS})
 
   add_executable(${PROJECT_NAME}_tests
     src/tests/test_utils.cpp
@@ -127,7 +127,8 @@ if(BUILD_TESTING)
     ${PROJECT_NAME}_mapping
     ${PROJECT_NAME}_estimator
     ${OpenCV_LIBRARIES} ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} GTest::GTest
-    GTest::Main)
+    GTest::Main
+    Python3::Python)
 
   add_test(
     ${PROJECT_NAME}_tests

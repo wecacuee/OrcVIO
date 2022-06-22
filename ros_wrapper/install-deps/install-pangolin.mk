@@ -21,12 +21,13 @@ $(PANGOLIN_INSTALLED): $(PANGOLIN_DIR)/CMakeLists.txt
 	cd "$(PANGOLIN_DIR)/build" \
 		&& cmake .. -DCMAKE_INSTALL_PREFIX=$(PANGOLIN_INSTALL_DIR) \
 	    && cmake --build . \
+	    && cmake --build . -t pypangolin_pip_install \
 		&& make install
 
 $(PANGOLIN_DIR)/CMakeLists.txt:
 	mkdir -p $(@D)
 	git clone https://github.com/stevenlovegrove/Pangolin.git "$(@D)" || true
-	cd "$(@D)" && git checkout $(PANGOLIN_VERSION)
+	cd "$(@D)" && git checkout $(PANGOLIN_VERSION) && git submodule init && git submodule update
 	touch $@
 
 echo-%:
