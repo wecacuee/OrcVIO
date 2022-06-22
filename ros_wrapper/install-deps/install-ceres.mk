@@ -2,7 +2,7 @@
 SHELL=/bin/bash -l
 ROOT_DIR?=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
-CERES_VERSION?=1.9.0
+CERES_VERSION?=1.14.0
 SOURCE_PREFIX?=$(HOME)/.local/src/
 STOW_PREFIX?=$(SOURCE_PREFIX)/stow
 
