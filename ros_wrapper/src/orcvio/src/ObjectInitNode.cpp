@@ -51,24 +51,21 @@ namespace orcvio
 #endif 
 
         // get the dir path to save object map
-        std::string ros_log_dir;
-        ros::get_environment_variable(ros_log_dir, "ROS_LOG_DIR");
-        nh.param<std::string>("result_dir_path_object_map", result_dir_path_object_map, ros_log_dir);
+        if ( ! nh.getParam("result_dir_path_object_map", result_dir_path_object_map)) {
+            ROS_FATAL_STREAM("result_dir_path_object_map is a required param");
+        }
 
         if (exists(result_dir_path_object_map))
         {
             directory_iterator end_it;
             directory_iterator it(result_dir_path_object_map.c_str());
-            if (it == end_it)
+            if (it != end_it)
             {
-                // this is fine
-            }
-            else
-            {
-                ROS_INFO_STREAM("object map path exists and nonempty, delete contents in " << result_dir_path_object_map.c_str());
+                ROS_FATAL_STREAM("object map path exists and nonempty, delete contents in " << result_dir_path_object_map);
                 // if this dir already exists, then delete all contents inside
-                std::string del_cmd = "exec rm -r " + result_dir_path_object_map + "*";
-                int tmp = system(del_cmd.c_str());
+                // std::string del_cmd = "exec rm -r " + result_dir_path_object_map + "*";
+                // int tmp = system(del_cmd.c_str());
+                // remove_all(result_dir_path_object_map);
             }
         }
         else
@@ -78,7 +75,10 @@ namespace orcvio
             boost::filesystem::path dir(path);
             if (boost::filesystem::create_directory(dir))
             {
-                std::cerr << "Directory Created: " << result_dir_path_object_map << std::endl;
+                ROS_INFO_STREAM("Directory Created: " << result_dir_path_object_map);
+            } else {
+                ROS_FATAL_STREAM("Failed to create the directory: "
+                                 << result_dir_path_object_map);
             }
         }
 

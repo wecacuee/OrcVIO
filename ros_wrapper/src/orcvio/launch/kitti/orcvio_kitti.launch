@@ -10,7 +10,7 @@
   <!-- raw data  -->
   <!-- <arg name="path_bag" default="/media/erl/disk1/orcvio/kitti_rosbags/kitti_2011_09_26_drive_0022_sync.bag" /> -->
   <!-- <arg name="path_bag" default="/media/erl/disk1/orcvio/kitti_rosbags/kitti_2011_09_26_drive_0023_sync.bag" /> -->
-  <arg name="path_bag" default="/media/erl/disk1/orcvio/kitti_rosbags/kitti_09260023_with_keypoints.bag" />
+  <arg name="path_bag" default="$(find  orcvio)/kitti-bags/kitti_odom06_with_keypoints.bag" />
   
 
   <arg name="visualize_rviz_arg" default="true" />
