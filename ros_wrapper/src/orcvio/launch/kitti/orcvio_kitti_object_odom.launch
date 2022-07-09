@@ -1,6 +1,6 @@
 <launch>
 
-  <arg name="robot" default="orcvio"/>
+  <arg name="robot" default="orcvio_robot"/>
   <arg name="fixed_frame_id" default="world"/>
 
   <arg name="visualize_rviz_arg" default="true" />
