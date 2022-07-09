@@ -51,7 +51,7 @@
           <param name="result_dir_path_2d_bbox" value="$(find orcvio)/kitti-bags/results_dir/2d_bbox" />
 
           <!-- camera extrinsics -->
-          <!-- TODO FIXME need to change this for every kitti date, make it load from camera info topic -->
+          <!-- TODO FIXME need to change this for every kitti date, make it load from tf_static topic -->
           <!-- 09 26  -->
           <rosparam param="T_cam_imu">
               [

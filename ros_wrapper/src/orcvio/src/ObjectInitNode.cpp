@@ -1,4 +1,6 @@
 #include <sstream>
+#include <sophus/common.hpp>
+#include <sophus/rotation_matrix.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/format.hpp>
 #include <set>
@@ -131,6 +133,20 @@ namespace orcvio
             matrix_TItoC.at(4), matrix_TItoC.at(5), matrix_TItoC.at(6), matrix_TItoC.at(7),
             matrix_TItoC.at(8), matrix_TItoC.at(9), matrix_TItoC.at(10), matrix_TItoC.at(11),
             matrix_TItoC.at(12), matrix_TItoC.at(13), matrix_TItoC.at(14), matrix_TItoC.at(15);
+
+        Eigen::Matrix3d R = T_ItoC.block(0, 0, 3, 3);
+        if (! Sophus::isOrthogonal(R) ) {
+            // Sophus precision is 1e-10. Try again with lower precision.
+            if ( ! (R*R.transpose()).isApprox(Eigen::Matrix3d::Identity(), 1e-5)) {
+                ROS_FATAL_STREAM("T_cam_imu is not SE3. Invalid rotation part which is not orthogonal R_cam_imu:\n" << R << "\nR @ R.T:\n" << R*R.transpose());
+                ros::shutdown();
+            } else {
+                // It is a precision problem not a user input problem. Force the rotation matrix to be orthogonal.
+                R = Sophus::makeRotationMatrix(R);
+                T_ItoC.block(0, 0, 3, 3) = R;
+                SOPHUS_ENSURE(Sophus::isOrthogonal(R), "Sophus is stupid. R : \n  {} ", R);
+            }
+        }
 
         // step 2: get T_CtoI
         T_CtoI = T_ItoC.inverse().eval();
@@ -1303,12 +1319,11 @@ namespace orcvio
             Eigen::Matrix<double, 3, 3> R_ItoG = clones_imu.at(timestamp).Rot_GtoC();
             Eigen::Matrix<double, 3, 1> p_IinG = clones_imu.at(timestamp).pos_CinG();
 
-            Eigen::Matrix<double, 4, 4> T_ItoG;
+            Eigen::Matrix<double, 4, 4> T_ItoG = Eigen::Matrix4d::Identity();
             T_ItoG.block(0, 0, 3, 3) = R_ItoG;
             T_ItoG.block(0, 3, 3, 1) = p_IinG;
 
-            Eigen::Matrix<double, 4, 4> T_CitoG;
-            T_CitoG = T_ItoG * T_CtoI;
+            Eigen::Matrix<double, 4, 4> T_CitoG = T_ItoG * T_CtoI;
 
             Eigen::Matrix<double, 3, 3> R_GtoCi;
             R_GtoCi = T_CitoG.block(0, 0, 3, 3).transpose();

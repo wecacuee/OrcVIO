@@ -4,7 +4,10 @@
   <arg name="fixed_frame_id" default="world"/>
 
   <!-- bag parameters -->
-  <arg name="path_bag" default="/media/erl/disk2/euroc/MH_01_easy.bag" />
+  <!-- Create a symlink to your euroc-bags directory
+  $ ln -s ~/data/orcvio_ws/euroc/bags euroc-bags
+  -->
+  <arg name="path_bag" default="$(find orcvio)/euroc-bags/MH_01_easy.bag" />
 
   <!-- evaluation mode is used to compare the results of different flags -->
   <!-- <arg name="evaluation_mode" default="true" />   -->
@@ -49,7 +52,7 @@
     <node pkg="rosbag" type="play" name="rosbag" args="$(arg path_bag)" required="true"/>
     <!-- open rviz  -->
     <group if="$(arg visualize_rviz)" >
-      <node type="rviz" name="rviz" pkg="rviz" args="-d $(find orcvio)/../../../ros_wrapper/src/orcvio/launch/rviz/orcvio_euroc.rviz" />
+      <node type="rviz" name="rviz" pkg="rviz" args="-d $(find orcvio)/launch/rviz/orcvio_euroc.rviz" />
     </group>
 
 </launch>
