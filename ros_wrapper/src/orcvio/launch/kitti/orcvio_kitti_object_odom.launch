@@ -41,11 +41,13 @@
       >
 
     <!-- to use gdb  -->
-    <!-- <node pkg="nodelet" type="nodelet" name="ObjectMapper"
+    <!--
+    <node pkg="nodelet" type="nodelet" name="ObjectMapper"
       args="standalone orcvio/ObjectMapperNodelet"
       output="screen"
-      launch-prefix="xterm -e gdb dash-args"
-      > -->
+      launch-prefix="xterm -e gdb -ex run -args"
+      >
+      -->
 
           <param name="fixed_frame_id" value="$(arg fixed_frame_id)"/>
           <param name="result_dir_path_object_map" value="$(find orcvio)/kitti-bags/$(arg bagname)/results_dir/object_map/" />
