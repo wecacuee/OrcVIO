@@ -14,14 +14,14 @@ of the original pose file
 """
 
 # Change this to the directory where you store KITTI data
-basedir = '/home/jamesdi1993/datasets/Kitti'
+basedir = os.path.expanduser('~/data/orcvio_ws/kitti')
 
 # Specify the dataset to load
 sequence = '06'
 date = '2011_09_30' # mapping from odometry to raw dataset 
 drive = '0020'
 
-odometry_path = os.path.join(basedir, 'odometry/dataset')
+odometry_path = os.path.join(basedir, 'dataset')
 raw_data_path = os.path.join(basedir, 'raw_data')
 
 # Read both odometry and raw datasets;
@@ -52,7 +52,7 @@ print("\nExample of timestamps: " + str(odometry_data.timestamps[0:10]))
 print("=======================================")
 
 # extract timestamps
-timestamps = np.array(map(lambda x: x.total_seconds(), odometry_data.timestamps)).reshape(-1, 1)
+timestamps = np.array(list(map(lambda x: x.total_seconds(), odometry_data.timestamps))).reshape(-1, 1)
 
 # print(timestamps.shape)
 
@@ -63,7 +63,7 @@ print("\nExample of extracted translation: " + str(p_w_imu[0]))
 
 # note, here we use hamilton quaternion 
 # with qx qy qz qw format 
-q_w_imu = np.array(map(utils.matrix_to_quaternion, R_w_imu)) # qx qy qz qw
+q_w_imu = np.array(list(map(utils.matrix_to_quaternion, R_w_imu))) # qx qy qz qw
 p_w_imu = np.array(p_w_imu)
 
 # Construct dataset and output

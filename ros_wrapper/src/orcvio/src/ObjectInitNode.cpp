@@ -63,7 +63,7 @@ namespace orcvio
             directory_iterator it(result_dir_path_object_map.c_str());
             if (it != end_it)
             {
-                ROS_FATAL_STREAM("object map path exists and nonempty, delete contents in " << result_dir_path_object_map);
+                ROS_ERROR_STREAM("object map path exists and nonempty, delete contents in " << result_dir_path_object_map);
                 // if this dir already exists, then delete all contents inside
                 // std::string del_cmd = "exec rm -r " + result_dir_path_object_map + "*";
                 // int tmp = system(del_cmd.c_str());

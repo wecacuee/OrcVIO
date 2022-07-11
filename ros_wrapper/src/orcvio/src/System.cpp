@@ -20,9 +20,12 @@
 
 #include <opencv2/core/utility.hpp>
 
+#include <boost/filesystem.hpp>
+
 using namespace std;
 using namespace cv;
 using namespace Eigen;
+namespace bfs = boost::filesystem;
 
 namespace orcvio {
 
@@ -440,6 +443,7 @@ bool System::createRosIO() {
     stable_feature_msg_ptr->header.frame_id = fixed_frame_id;
     stable_feature_msg_ptr->height = 1;
 
+    bfs::create_directories(output_dir_traj);
     fStateToSave.open((output_dir_traj+"/stamped_traj_estimate.txt").c_str(), std::ofstream::trunc);
 
     // publish tf 
