@@ -24,10 +24,11 @@ if __name__ == '__main__':
 
                 # This also replaces tf timestamps under the assumption 
                 # that all transforms in the message share the same timestamp
+                ren_topic  = renaming.get(topic, topic)
                 if not header_timestamps:
-                    outbag.write(renaming.get(topic, topic), msg, t)
+                    outbag.write(ren_topic, msg, t)
                 else:
                     if topic == "/tf" and msg.transforms:
-                        outbag.write(topic, msg, msg.transforms[0].header.stamp)
+                        outbag.write(ren_topic, msg, msg.transforms[0].header.stamp)
                     else:
-                        outbag.write(topic, msg, msg.header.stamp if msg._has_header else t)
+                        outbag.write(ren_topic, msg, msg.header.stamp if msg._has_header else t)
