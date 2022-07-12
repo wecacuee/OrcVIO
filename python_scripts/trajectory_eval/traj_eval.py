@@ -1,6 +1,7 @@
 import numpy as np
 import os, sys
 import shutil
+import typer
 
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) +
     "/../third_party/rpg_trajectory_evaluation/src/rpg_trajectory_evaluation")
@@ -11,13 +12,12 @@ class TrajEval():
     """
     this class evaluates the trajectory wrt groundtruth
     """
-    def __init__(self):
+    def __init__(self, result_dir, dir_path):
 
         # ref http://www.cvlibs.net/datasets/kitti/eval_odometry.php
         self.subtraj_lengths = [x * 100 for x in range(1, 9)]
-
-        self.result_dir = os.path.abspath(__file__ + "/../../../") + "/cache/"
-        self.dir_path = os.path.abspath(__file__ + "/../../../") + "/python_scripts/" 
+        self.result_dir = result_dir
+        self.dir_path = dir_path
 
         # for debugging 
         # print(self.result_dir)
@@ -83,16 +83,17 @@ class TrajEval():
         self.evaluate_and_plot()
         self.compute_kitti_relative_error()
 
-if __name__ == "__main__":
-
-    import numpy as np
-    import os, sys
-    import shutil
-
-    sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)) +
-        "/third_party/rpg_trajectory_evaluation/src/rpg_trajectory_evaluation")
-
-    from trajectory import Trajectory
-
-    TE = TrajEval()
+def main(
+        result_dir : str = os.path.abspath(__file__ + "/../../../") + "/cache/",
+):
+    """
+    Compare stamped_traj_estimate with stamped_groundtruth in the result_dir
+    and generate results in the same dir
+    """
+    dir_path : str = os.path.abspath(__file__ + "/../../../") + "/python_scripts/" 
+    TE = TrajEval(result_dir = result_dir,
+                  dir_path = dir_path)
     TE.evaluate()
+
+if __name__ == "__main__":
+    typer.run(main)

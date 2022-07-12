@@ -1,3 +1,7 @@
 shapely
 descartes
 transforms3d 
+numpy
+typer
+pykitti
+pandas
