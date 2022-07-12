@@ -97,6 +97,25 @@ Or directly run `make test` from `build` directory and the test logs are saved i
 }
 ```
 
+## Further Documentation
+
+### A note about Extrinsics and calibration using Kalibr
+
+Read [here](docs/Extrinsics.md)
+
+
+### A note about quaternion fromat
+
+Read [here](docs/Quaternion-fromat.md)
+
+### How to Setup front end for keypoint, starmap and bbox detection
+
+Follow instructions [here](docs/Set-up-front-end.md)
+
+### How to run on KITTI dataset with simulated IMU
+
+Follow instructions [here](docs/Work-with-KITTI-dataset.md)
+
 ## License
 
 ```
