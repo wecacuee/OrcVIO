@@ -345,11 +345,15 @@ namespace orcvio
         std::vector<double> cam0_intrinsics_temp(4);
         std::vector<double> cam0_distortion_coeffs_temp(4);
 
+        ROS_ASSERT(cam_info->K.size() >= 6);
         camK << cam_info->K[0], 0, cam_info->K[2],
             0, cam_info->K[4], cam_info->K[5],
             0, 0, 1;
 
-        camD << cam_info->D[0], cam_info->D[1], cam_info->D[2], cam_info->D[3];
+        if (cam_info->D.size() >= 4)
+            camD << cam_info->D[0], cam_info->D[1], cam_info->D[2], cam_info->D[3];
+        else
+            camD << 0, 0, 0, 0;
 
         // for debugging
         // std::cout << camK << std::endl;

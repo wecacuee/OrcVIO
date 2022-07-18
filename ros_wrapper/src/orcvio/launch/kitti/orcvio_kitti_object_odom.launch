@@ -4,7 +4,7 @@
   <arg name="fixed_frame_id" default="world"/>
 
   <arg name="visualize_rviz_arg" default="false" />
-  <arg name="bagname" default="kitti_odom07_with_keypoints" />
+  <arg name="bagname" default="kitti_data_odometry_gray_sequence_06" />
 
   <group ns="$(arg robot)">
     <!-- System Manager Nodelet  -->
@@ -131,7 +131,9 @@
     <!-- <node pkg="rosbag" type="play" name="rosbag" args="/media/erl/disk1/orcvio/kitti_rosbags/kitti_odom07_with_keypoints.bag" required="true"/> -->
     <!-- <node pkg="rosbag" type="play" name="rosbag" args="/media/erl/disk1/orcvio/kitti_rosbags/kitti_odom08_with_keypoints.bag" required="true"/> -->
     <!-- <node pkg="rosbag" type="play" name="rosbag" args="/media/erl/disk1/orcvio/kitti_rosbags/kitti_odom09_with_keypoints.bag" required="true"/> -->
-    <node pkg="rosbag" type="play" name="rosbag" args="$(find orcvio)/kitti-bags/$(arg bagname).bag" required="true"/>
+    <node pkg="rosbag" type="play" name="rosbag" args="$(find orcvio)/kitti-bags/$(arg bagname).bag" required="true">
+      <remap from="/kitti/camera_gray_left/image_rect" to="/kitti/camera_gray_left/image" />
+    </node>
 
 
     <!-- open rviz  -->
