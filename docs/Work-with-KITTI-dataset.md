@@ -30,6 +30,14 @@
 |   |   |── calib_velo_to_cam.txt
 
 ```
+## Convert KITTI poses into Hamiltonian quaternion
+
+Use this script:
+https://github.com/wecacuee/OrcVIO/blob/wip-kitti-mono-sim-imu/python_scripts/trajectory_eval/kitti_odom_gt_converter.py
+
+```
+python kitti_odom_gt_converter.py --sequence 7 --kitti-dataset-dir ~/data/orcvio_ws/kitti --output_path {odometry_data}/poses/{sequence!02d}_quat.txt
+```
 
 ## generate simulated IMU data
 - use this repo https://github.com/moshanATucsd/OrcVIO_IMU_simulation
